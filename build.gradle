@@ -21,6 +21,8 @@ allprojects {
         maven {
             url "https://dl.bintray.com/videolan/Android"
         }
+
+        maven { url 'https://jitpack.io' }
         
     }
 }

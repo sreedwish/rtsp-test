@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent">
+
+
 
     <FrameLayout
         android:id="@+id/frm"
@@ -13,7 +14,8 @@
         android:layout_height="250dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone">
 
         <org.videolan.libvlc.util.VLCVideoLayout
             android:id="@+id/videoView"
@@ -23,6 +25,13 @@
     </FrameLayout>
 
 
+    <TextureView
+        android:id="@+id/texture"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
 
 
@@ -33,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/frm"
+        app:layout_constraintTop_toBottomOf="@id/texture"
         app:layout_constraintStart_toStartOf="parent"
         android:hint="enter video source here.."/>
 

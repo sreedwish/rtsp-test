@@ -16,6 +16,7 @@ import com.entraze.testrtspplayer.databinding.ActivityMainBinding;
 import org.videolan.libvlc.LibVLC;
 import org.videolan.libvlc.Media;
 import org.videolan.libvlc.MediaPlayer;
+import org.videolan.libvlc.util.DisplayManager;
 import org.videolan.libvlc.util.VLCVideoLayout;
 
 import java.util.ArrayList;
@@ -49,7 +50,11 @@ public class MainActivity extends AppCompatActivity {
 
         mVideoLayout = binding.videoView;
 
+
         mMediaPlayer.attachViews(mVideoLayout, null, ENABLE_SUBTITLES, USE_TEXTURE_VIEW);
+
+        mMediaPlayer.setVideoScale(MediaPlayer.ScaleType.SURFACE_FILL);
+
 
 
         binding.btnStop.setVisibility(View.GONE);
@@ -80,6 +85,8 @@ public class MainActivity extends AppCompatActivity {
                         final Media media = new Media(mLibVLC,uri);
 
                         mMediaPlayer.setMedia(media);
+
+
                         media.release();
 
                     } catch (Exception e) {
@@ -123,4 +130,6 @@ public class MainActivity extends AppCompatActivity {
         mMediaPlayer.release();
         mLibVLC.release();
     }
+
+
 }
