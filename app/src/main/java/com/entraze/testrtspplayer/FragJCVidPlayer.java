@@ -1,7 +1,12 @@
 package com.entraze.testrtspplayer;
 
+import android.content.Context;
 import android.graphics.SurfaceTexture;
+import android.media.AsyncPlayer;
+import android.media.AudioAttributes;
+import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Surface;
@@ -17,9 +22,8 @@ import java.io.IOException;
 
 import fm.jiecao.jcvideoplayer_lib.JCMediaManager;
 import fm.jiecao.jcvideoplayer_lib.JCResizeTextureView;
-import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
-import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerManager;
-import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
+
+import static android.media.MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING;
 
 public class FragJCVidPlayer extends Fragment implements TextureView.SurfaceTextureListener{
 
@@ -68,11 +72,50 @@ public class FragJCVidPlayer extends Fragment implements TextureView.SurfaceText
         try {
             jcMediaManager.mediaPlayer.setDataSource(getContext(),media_uri);
 
-            jcMediaManager.mediaPlayer.prepare();
+            jcMediaManager.mediaPlayer.prepareAsync();
 
-            jcMediaManager.mediaPlayer.start();
+            jcMediaManager.mediaPlayer.setVideoScalingMode(VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING);
 
-        } catch (IOException e) {
+
+            jcMediaManager.mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+                @Override
+                public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
+
+                    try {
+                       jcMediaManager.mediaPlayer.release();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    return true;
+                }
+            });
+
+            jcMediaManager.mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mediaPlayer) {
+
+                    mediaPlayer.start();
+
+                }
+            });
+
+
+            jcMediaManager.mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mediaPlayer) {
+
+                    try {
+                        jcMediaManager.mediaPlayer.reset();
+                        jcMediaManager.mediaPlayer.start();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            });
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -93,6 +136,8 @@ public class FragJCVidPlayer extends Fragment implements TextureView.SurfaceText
     public void onSurfaceTextureUpdated(SurfaceTexture surfaceTexture) {
 
     }
+
+
 
 
 }
